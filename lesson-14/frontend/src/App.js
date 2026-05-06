@@ -20,8 +20,88 @@
 // 7. Output the ID of the selected event on the EventDetailPage
 // BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 
+import {BrowserRouter, createBrowserRouter, RouterProvider} from "react-router-dom";
+import {loader as eventsLoader} from "./pages/Events";
+import { loader as eventDetailLoader, action as deleteEvent} from "./pages/EventsDetail";
+import { action as newEventAction} from "./pages/NewEvent";
+import { Routes, Route } from 'react-router-dom';
+
+import RootLayout from "./pages/Root";
+import Home from "./pages/Home";
+import EventsRoot from "./pages/EventsRoot";
+import Events from "./pages/Events";
+import EventsDetail from "./pages/EventsDetail";
+import NewEvent from "./pages/NewEvent";
+import EditEvent from "./pages/EditEvent";
+import ErrorPage from "./pages/ErrorPage";
+
 function App() {
-  return <div></div>;
-}
+	
+	const route = createBrowserRouter([
+		{
+			path: '/',
+				element: <RootLayout/>,
+				errorElement: <ErrorPage/>,
+				children: [
+					{
+						path: '/',
+						element: <Home/>
+					},
+					{
+						path: '/events',
+						element: <EventsRoot/>,
+						children: [
+							{
+								index: true,
+								element: <Events/>,
+								loader: eventsLoader,
+							},
+							{
+								path: 'new',
+								element: <NewEvent/>,
+								action: newEventAction
+							},
+							{
+								path: ':eventId',
+								id: 'event-detail',
+								loader: eventDetailLoader,
+								children: [
+									{
+										index: true,
+										element: <EventsDetail/>,
+										action: deleteEvent,
+									},
+									{
+										path: 'edit',
+										element: <EditEvent/>
+									}
+								]
+							},
+						]
+					}
+				]
+	}])
+	
+	return <RouterProvider router={route} />
+	
+	
+// 	return (
+// 		<>
+// 			<BrowserRouter >
+// 			<Routes >
+// 				<Route path='/' element={<RootLayout/>} errorElement={<ErrorPage/>}>
+// 					<Route path='/' element={<Home/>}/>
+// 					<Route path='/events' element={<EventsRoot/>}>
+// 						<Route index element={<Events/>} />
+// 						<Route path='new' element={<NewEvent/>} />
+// 						<Route path=':eventId' element={<EventsDetail/>} />
+// 						<Route path=':eventId/edit' element={<EditEvent/>} />
+// 					</Route>
+// 				</Route>
+// 			</Routes>
+// 			</BrowserRouter>
+// 		</>
+// 	)
+ }
 
 export default App;
