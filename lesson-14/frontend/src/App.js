@@ -92,7 +92,7 @@ function App() {
 // 				<Route path='/' element={<RootLayout/>} errorElement={<ErrorPage/>}>
 // 					<Route path='/' element={<Home/>}/>
 // 					<Route path='/events' element={<EventsRoot/>}>
-// 						<Route index element={<Events/>} />
+// 						<Route (tabs) element={<Events/>} />
 // 						<Route path='new' element={<NewEvent/>} />
 // 						<Route path=':eventId' element={<EventsDetail/>} />
 // 						<Route path=':eventId/edit' element={<EditEvent/>} />
